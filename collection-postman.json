@@ -1,99 +1,114 @@
 {
-    "info": {
-      "name": "MySQL API Collection",
-      "_postman_id": "d9c84e16-5f04-4032-9702-f43a7e914786",
-      "description": "Collection for managing MySQL database via API",
-      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-    },
-    "item": [
-      {
-        "name": "Get All Users",
-        "request": {
-          "method": "GET",
-          "header": [],
-          "url": {
-            "raw": "http://localhost:3000/users",
-            "protocol": "http",
-            "host": ["localhost"],
-            "port": "3000",
-            "path": ["users"]
-          }
-        }
-      },
-      {
-        "name": "Create New User",
-        "request": {
-          "method": "POST",
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "application/json"
-            }
-          ],
-          "body": {
-            "mode": "raw",
-            "raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john.doe@example.com\"\n}"
-          },
-          "url": {
-            "raw": "http://localhost:3000/users",
-            "protocol": "http",
-            "host": ["localhost"],
-            "port": "3000",
-            "path": ["users"]
-          }
-        }
-      },
-      {
-        "name": "Get User by ID",
-        "request": {
-          "method": "GET",
-          "header": [],
-          "url": {
-            "raw": "http://localhost:3000/users/1",
-            "protocol": "http",
-            "host": ["localhost"],
-            "port": "3000",
-            "path": ["users", "1"]
-          }
-        }
-      },
-      {
-        "name": "Update User",
-        "request": {
-          "method": "PUT",
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "application/json"
-            }
-          ],
-          "body": {
-            "mode": "raw",
-            "raw": "{\n    \"name\": \"Jane Doe\",\n    \"email\": \"jane.doe@example.com\"\n}"
-          },
-          "url": {
-            "raw": "http://localhost:3000/users/1",
-            "protocol": "http",
-            "host": ["localhost"],
-            "port": "3000",
-            "path": ["users", "1"]
-          }
-        }
-      },
-      {
-        "name": "Delete User",
-        "request": {
-          "method": "DELETE",
-          "header": [],
-          "url": {
-            "raw": "http://localhost:3000/users/1",
-            "protocol": "http",
-            "host": ["localhost"],
-            "port": "3000",
-            "path": ["users", "1"]
-          }
+  "info": {
+    "name": "Medsos API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get All Posts",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/posts",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["posts"]
         }
       }
-    ]
-  }
-  
+    },
+    {
+      "name": "Get Post By ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/posts/:id",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["posts", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Post",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"My First Post\",\n  \"content\": \"This is the content of my first post.\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/posts",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["posts"]
+        }
+      }
+    },
+    {
+      "name": "Update Post",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Updated Post Title\",\n  \"content\": \"This is the updated content of the post.\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/posts/:id",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["posts", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Delete Post",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/posts/:id",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["posts", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
