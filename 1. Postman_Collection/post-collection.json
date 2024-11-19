@@ -1,0 +1,101 @@
+{
+    "info": {
+      "name": "medsosApi",
+      "description": "Koleksi untuk pengujian API medsosApi.",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Get All Posts",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:3000/posts",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["posts"]
+          }
+        }
+      },
+      {
+        "name": "Get Post By ID",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:3000/posts/:id",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["posts", ":id"]
+          },
+          "description": "Ganti `:id` dengan ID postingan yang ingin diambil."
+        }
+      },
+      {
+        "name": "Create Post",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"title\": \"Judul Post\",\n  \"content\": \"Konten Post\"\n}"
+          },
+          "url": {
+            "raw": "http://localhost:3000/posts",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["posts"]
+          }
+        }
+      },
+      {
+        "name": "Update Post",
+        "request": {
+          "method": "PUT",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"title\": \"Judul Post Diperbarui\",\n  \"content\": \"Konten Post Diperbarui\"\n}"
+          },
+          "url": {
+            "raw": "http://localhost:3000/posts/:id",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["posts", ":id"]
+          },
+          "description": "Ganti `:id` dengan ID postingan yang ingin diperbarui."
+        }
+      },
+      {
+        "name": "Delete Post",
+        "request": {
+          "method": "DELETE",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:3000/posts/:id",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["posts", ":id"]
+          },
+          "description": "Ganti `:id` dengan ID postingan yang ingin dihapus."
+        }
+      }
+    ]
+  }
+  

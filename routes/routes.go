@@ -7,12 +7,23 @@ import (
 )
 
 func SetupRoutes(router *gin.Engine) {
+	// Route untuk posts
 	postGroup := router.Group("/posts")
 	{
-		postGroup.GET("/", controllers.GetAllPosts)
+		postGroup.GET("", controllers.GetAllPosts)
 		postGroup.GET("/:id", controllers.GetPostByID)
-		postGroup.POST("/", controllers.CreatePost)
+		postGroup.POST("", controllers.CreatePost)
 		postGroup.PUT("/:id", controllers.UpdatePost)
 		postGroup.DELETE("/:id", controllers.DeletePost)
+	}
+
+	// Route untuk users
+	userGroup := router.Group("/users")
+	{
+		userGroup.GET("", controllers.GetAllUsers)
+		userGroup.GET("/:id", controllers.GetUserByID)
+		userGroup.POST("", controllers.CreateUser)
+		userGroup.PUT("/:id", controllers.UpdateUser)
+		userGroup.DELETE("/:id", controllers.DeleteUser)
 	}
 }

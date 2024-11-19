@@ -7,14 +7,22 @@ import (
 	"gorm.io/gorm"
 )
 
+// Variabel global untuk menyimpan koneksi database
 var DB *gorm.DB
 
-func ConnectDatabase() {
+// ConnectDB mengatur koneksi ke database MySQL
+func ConnectDB() {
+	// Data Source Name (DSN) untuk MySQL
 	dsn := "root:@tcp(127.0.0.1:3306)/medsosapi?charset=utf8mb4&parseTime=True&loc=Local"
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	var err error
+
+	// Membuka koneksi database menggunakan GORM
+	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
+		// Gagal koneksi ke database
 		log.Fatal("Failed to connect to database:", err)
 	}
-	DB = db
-	log.Println("Database connected successfully!")
+
+	// Berhasil terhubung
+	log.Println("Database connected")
 }
