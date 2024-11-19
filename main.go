@@ -12,8 +12,8 @@ func main() {
 	// Hubungkan ke database
 	config.ConnectDB()
 
-	// Auto-migrate model untuk membuat tabel Post jika belum ada
-	config.DB.AutoMigrate(&models.Post{})
+	// Migrasi model ke database
+	config.DB.AutoMigrate(&models.Post{}, &models.User{})
 
 	// Inisialisasi router
 	router := gin.Default()
@@ -21,6 +21,6 @@ func main() {
 	// Atur route
 	routes.SetupRoutes(router)
 
-	// Jalankan server di port 8080
+	// Jalankan server di port 3000
 	router.Run(":3000")
 }
