@@ -26,4 +26,11 @@ func SetupRoutes(router *gin.Engine) {
 		userGroup.PUT("/:id", controllers.UpdateUser)
 		userGroup.DELETE("/:id", controllers.DeleteUser)
 	}
+
+	// Route untuk Likes
+	likeRoutes := router.Group("/likes")
+	{
+		likeRoutes.POST("/", controllers.LikePost)     // Like sebuah postingan
+		likeRoutes.DELETE("/", controllers.UnlikePost) // Unlike sebuah postingan
+	}
 }

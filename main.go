@@ -13,7 +13,7 @@ func main() {
 	config.ConnectDB()
 
 	// Migrasi model ke database
-	config.DB.AutoMigrate(&models.Post{}, &models.User{})
+	config.DB.AutoMigrate(&models.Post{}, &models.User{}, &models.Like{})
 
 	// Inisialisasi router
 	router := gin.Default()
