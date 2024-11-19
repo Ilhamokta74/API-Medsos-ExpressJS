@@ -6,14 +6,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRouter() *gin.Engine {
-	r := gin.Default()
-
-	r.GET("/posts", controllers.GetPosts)
-	r.GET("/posts/:id", controllers.GetPost)
-	r.POST("/posts", controllers.CreatePost)
-	r.PUT("/posts/:id", controllers.UpdatePost)
-	r.DELETE("/posts/:id", controllers.DeletePost)
-
-	return r
+func SetupRoutes(router *gin.Engine) {
+	postGroup := router.Group("/posts")
+	{
+		postGroup.GET("/", controllers.GetAllPosts)
+		postGroup.GET("/:id", controllers.GetPostByID)
+		postGroup.POST("/", controllers.CreatePost)
+		postGroup.PUT("/:id", controllers.UpdatePost)
+		postGroup.DELETE("/:id", controllers.DeletePost)
+	}
 }
