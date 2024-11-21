@@ -15,7 +15,11 @@ func GetAllPosts(c *gin.Context) {
 	config.DB.Find(&posts)
 
 	// Kirim respon JSON ke client
-	c.JSON(http.StatusOK, posts)
+	c.JSON(http.StatusOK, gin.H{
+		"status_code": http.StatusOK,
+		"status":      "success",
+		"data":        posts,
+	})
 }
 
 // GetPostByID mengambil satu post berdasarkan ID
@@ -23,33 +27,63 @@ func GetPostByID(c *gin.Context) {
 	id := c.Param("id") // Ambil ID dari parameter URL
 	var post models.Post
 
-	// Cari post berdasarkan ID
-	if err := config.DB.First(&post, id).Error; err != nil {
+	// Cari post berdasarkan UUID
+	if err := config.DB.Where("id = ?", id).First(&post).Error; err != nil {
 		// Jika tidak ditemukan, kirim error
 		c.JSON(http.StatusNotFound, gin.H{"error": "Post not found"})
 		return
 	}
 
 	// Kirim post dalam format JSON
-	c.JSON(http.StatusOK, post)
+	c.JSON(http.StatusOK, gin.H{
+		"status_code": http.StatusOK,
+		"status":      "success",
+		"data":        post,
+	})
 }
 
 // CreatePost membuat post baru
 func CreatePost(c *gin.Context) {
-	var post models.Post
+	// Struct sementara untuk validasi input
+	var input struct {
+		Title   string `json:"title" binding:"required"`
+		Content string `json:"content" binding:"required"`
+	}
 
-	// Bind JSON request ke struct Post
-	if err := c.ShouldBindJSON(&post); err != nil {
+	// Validasi input JSON
+	if err := c.ShouldBindJSON(&input); err != nil {
 		// Jika data tidak valid, kirim error
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status_code": http.StatusBadRequest,
+			"status":      "error",
+			"message":     "Invalid input data",
+			"errors":      err.Error(),
+		})
 		return
 	}
 
+	// Buat instance model Post dengan data input
+	post := models.Post{
+		Title:   input.Title,
+		Content: input.Content,
+	}
+
 	// Simpan data ke database
-	config.DB.Create(&post)
+	if err := config.DB.Create(&post).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"status_code": http.StatusInternalServerError,
+			"status":      "error",
+			"message":     "Failed to create post",
+		})
+		return
+	}
 
 	// Kirim respon JSON
-	c.JSON(http.StatusCreated, post)
+	c.JSON(http.StatusCreated, gin.H{
+		"status_code": http.StatusCreated,
+		"status":      "success",
+		"data":        post,
+	})
 }
 
 // UpdatePost memperbarui post berdasarkan ID
@@ -57,25 +91,53 @@ func UpdatePost(c *gin.Context) {
 	id := c.Param("id") // Ambil ID dari parameter URL
 	var post models.Post
 
-	// Cari post berdasarkan ID
-	if err := config.DB.First(&post, id).Error; err != nil {
+	// Cari post berdasarkan UUID
+	if err := config.DB.First(&post, "id = ?", id).Error; err != nil {
 		// Jika tidak ditemukan, kirim error
-		c.JSON(http.StatusNotFound, gin.H{"error": "Post not found"})
+		c.JSON(http.StatusNotFound, gin.H{
+			"status_code": http.StatusNotFound,
+			"status":      "error",
+			"message":     "Post not found",
+		})
 		return
 	}
 
-	// Bind JSON request ke struct Post
-	if err := c.ShouldBindJSON(&post); err != nil {
+	// Bind JSON request ke struct sementara untuk validasi
+	var input struct {
+		Title   string `json:"title" binding:"required"`
+		Content string `json:"content" binding:"required"`
+	}
+	if err := c.ShouldBindJSON(&input); err != nil {
 		// Jika data tidak valid, kirim error
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status_code": http.StatusBadRequest,
+			"status":      "error",
+			"message":     "Invalid input data",
+			"errors":      err.Error(),
+		})
 		return
 	}
 
-	// Perbarui data di database
-	config.DB.Save(&post)
+	// Perbarui data pada struct post
+	post.Title = input.Title
+	post.Content = input.Content
+
+	// Simpan perubahan ke database
+	if err := config.DB.Save(&post).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"status_code": http.StatusInternalServerError,
+			"status":      "error",
+			"message":     "Failed to update post",
+		})
+		return
+	}
 
 	// Kirim respon JSON
-	c.JSON(http.StatusOK, post)
+	c.JSON(http.StatusOK, gin.H{
+		"status_code": http.StatusOK,
+		"status":      "success",
+		"data":        post,
+	})
 }
 
 // DeletePost menghapus post berdasarkan ID
@@ -83,16 +145,32 @@ func DeletePost(c *gin.Context) {
 	id := c.Param("id") // Ambil ID dari parameter URL
 	var post models.Post
 
-	// Cari post berdasarkan ID
-	if err := config.DB.First(&post, id).Error; err != nil {
+	// Cari post berdasarkan UUID
+	if err := config.DB.First(&post, "id = ?", id).Error; err != nil {
 		// Jika tidak ditemukan, kirim error
-		c.JSON(http.StatusNotFound, gin.H{"error": "Post not found"})
+		c.JSON(http.StatusNotFound, gin.H{
+			"status_code": http.StatusNotFound,
+			"status":      "error",
+			"message":     "Post not found",
+		})
 		return
 	}
 
 	// Hapus data dari database
-	config.DB.Delete(&post)
+	if err := config.DB.Delete(&post).Error; err != nil {
+		// Jika terjadi error saat menghapus
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"status_code": http.StatusInternalServerError,
+			"status":      "error",
+			"message":     "Failed to delete post",
+		})
+		return
+	}
 
 	// Kirim respon JSON
-	c.JSON(http.StatusOK, gin.H{"message": "Post deleted"})
+	c.JSON(http.StatusOK, gin.H{
+		"status_code": http.StatusOK,
+		"status":      "success",
+		"message":     "Post deleted successfully",
+	})
 }
