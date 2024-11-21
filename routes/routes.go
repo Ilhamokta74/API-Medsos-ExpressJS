@@ -20,9 +20,9 @@ func SetupRoutes(router *gin.Engine) {
 	// Route untuk users
 	userGroup := router.Group("/users")
 	{
-		userGroup.GET("", controllers.GetAllUsers)
+		userGroup.GET("/", controllers.GetAllUsers)
 		userGroup.GET("/:id", controllers.GetUserByID)
-		userGroup.POST("", controllers.CreateUser)
+		userGroup.POST("/", controllers.CreateUser)
 		userGroup.PUT("/:id", controllers.UpdateUser)
 		userGroup.DELETE("/:id", controllers.DeleteUser)
 	}
